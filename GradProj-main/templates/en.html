@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- importing fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/static/styles.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+	<title>Project</title>
+</head>
+
+<body>
+	<div class="header">
+		<div class="header__item">Auto email</div> <!-- insert a logo here -->
+		<a class="header__item" href="#">About</a> <!-- link to about page -->
+		<a class="header__item" href="#">Main</a> <!-- link to main page -->
+
+	</div>
+	<div class="container">
+		<div class="block1">
+			<div class="title">Scan handwritten letter</div>
+			<img src="http://127.0.0.1:4000/video_feed" height="300px">
+			<form method="post" action="http://127.0.0.1:4000/request" class="buttons">
+				<!-- icons are located in static folder as svg files -->
+				<button class="CustomButton" type="submit" name="stop"><img src="/static/recordicon.svg"
+						class="Icon">Record</button>
+				<button class="CustomButton" type="submit" name="click"><img src="/static/cameraicon.svg"
+						class="CameraIcon">Capture</button>
+				<button class="CustomButton" type="submit" name="grey">Grey</button>
+			</form>
+		</div>
+		<div class="block2">
+			<div>
+				<div class="title">Scanned Information</div>
+				<br />
+				<form action="/send_email" method="post" class="Form">
+					<input class="Form__input" type="email" name="email" value="{{email}}" id="email"
+						placeholder="Email">
+					<input class="Form__input" type="text" name="title" value="{{title}}" id="title"
+						placeholder="Title">
+					<textarea class="Form__textarea" name="text" id="text" rows="12" cols="35"
+						placeholder="Write here your mail">{{text}}</textarea>
+					<div>
+						<label class="label" for="1">Would you like to attach a photo?</label>
+						<input type="radio" name="1">예 <input type="radio" name="1">아니오
+					</div>
+					<button class="CustomButton" type="submit"><img src="/static/sendicon.svg"
+							class="Icon">Send</button>
+				</form>
+				</dviv>
+			</div>
+		</div>
+</body>
+
+</html>

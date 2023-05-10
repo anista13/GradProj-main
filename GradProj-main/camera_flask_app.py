@@ -9,7 +9,7 @@ from threading import Thread
 from sendmail import *
 from convert_to_text import *
 
-global capture, rec_frame, grey, switch, neg, face, rec, out, result
+global capture, rec_frame, grey, switch, neg, face, rec, out, result, captured_img
 capture = 0
 grey = 0
 switch = 1
@@ -42,12 +42,11 @@ def gen_frames():  # generate frame by frame from camera
                 p = os.path.sep.join(
                     ['shots', "shot_{}.png".format(str(now).replace(":", ''))])
                 cv2.imwrite(p, frame)
-                global result
-                result = convert_to_text(p)
-                # socketio.emit('update', result)
+                global captured_img
+                captured_img=p #save the img as a global variable
+                
+                ##frame에 사진 찍은거 띄우기 
 
-                print(result)
-                # need to reload the page!!
             try:
                 ret, buffer = cv2.imencode('.jpg', cv2.flip(frame, 1))
                 frame = buffer.tobytes()
@@ -93,6 +92,16 @@ def tasks():
             else:
                 camera = cv2.VideoCapture(0)
                 switch = 1
+        elif request.form.get('ok') == 'OK':
+            global captured_img
+            result = convert_to_text(captured_img)
+            print(result)
+            return render_template('index.html', email=result[0], title=result[1], text=result[2])
+        elif request.form.get('upload') == 'Upload': ###여기 다시 보기!!!!!
+            print("upload pushed")
+            file = request.files['uploadFile']
+            result = convert_to_text(file)
+            print(result)
     elif request.method == 'GET':
         return render_template('index.html')
         # return redirect(url_for('tasks'))

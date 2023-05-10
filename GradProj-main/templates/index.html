@@ -30,6 +30,32 @@
 		}
 	</style>
 	<title>프로젝트</title>
+	<script>
+		function showImg(input){
+			var file = input.files[0];//선택된 파일 가져오기
+
+			//이미지 div추가
+			var newImage = document.createElement("img");
+			newImage.setAttribute("class", 'img');
+
+			//이미지 소스 가져오기
+			newImage.src = URL.createObjectURL(file);   
+
+			newImage.style.width = "70%";
+			newImage.style.height = "70%";
+			newImage.style.objectFit = "contain";
+			//이미지파일이 아닌경우 예외처리->이미 되어있음!
+
+			//이미지를 image-show div에 추가
+			var container = document.getElementById('image-show');
+			container.appendChild(newImage);
+			var prevImg = document.getElementById('image-show').firstElementChild;
+			prevImg.remove()
+			
+			var newImage = document.getElementById('image-show').lastElementChild;
+			newImage.style.visibility = "visible";
+		}
+	</script>
 </head>
 
 <body>
@@ -43,13 +69,14 @@
 					<h2 class="mt-5" style="font-family: 'Song Myung', serif;">E로 쓰는 편지</h2>
 
 					<h4 style="font-family: 'Song Myung', serif;">손으로 쓴 편지를 여기에서 스캔해 주세요</h4>
-					<img src="http://127.0.0.1:4000/video_feed" height="300px">
+					<div id="image-show"><img src="http://127.0.0.1:4000/video_feed" height="300px"></div>
 
 					<form method="post" action="http://127.0.0.1:4000/requests" class="buttons">
 						<input type="submit" value="Stop/Start" name="stop" />
 						<input type="submit" value="Capture" name="click" />
 						<input type="submit" value="Grey" name="grey" />
-
+						<input type="submit" value="OK" name="ok" />
+						<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">
 					</form>
 				</div>
 			</div>

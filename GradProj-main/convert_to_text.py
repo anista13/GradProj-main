@@ -10,8 +10,8 @@ def convert_to_text(img):
     #email
     reader_en = easyocr.Reader(['en'])
     raw_email = reader_en.readtext(extracted_img[0], detail=0, height_ths=1, width_ths=100)
-    #띄어쓰기 없애기
-    email = "".join(raw_email).replace(" ", "")
+    
+    email = "".join(raw_email).replace(" ", "")#띄어쓰기 없애기
     #@뒤는 한정짓기
     #####
     print(email)
@@ -22,6 +22,7 @@ def convert_to_text(img):
     
     #check grammar of title
     title=check_grammar(raw_title)
+    title="".join(title)
     print(title)
 
     #info

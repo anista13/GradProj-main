@@ -2,8 +2,15 @@
 import cv2 
 import numpy as np
 import easyocr
+from image_preprocess import *
+from PIL import ImageDraw, Image
 
-def extract_infos(processed_img):
+def extract_infos(img):#얘가 preprocess 함수 호출
+    processed_img=image_preprocess(img)
+
+    img = Image.fromarray(processed_img)
+    draw = ImageDraw.Draw(img)
+
     reader = easyocr.Reader(['ko'])
     textbox = reader.detect(processed_img, height_ths=1, width_ths=100)
     hor_list=textbox[0]
@@ -21,6 +28,8 @@ def extract_infos(processed_img):
                 center=(cx, cy)
         )
     
+    draw.rectangle(((email_coord[0], email_coord[2]), (email_coord[0]+w, email_coord[2]+h)), outline='red', width=2)
+
     #title
     title_coord=hor_list[0][1]
     w=title_coord[1]-title_coord[0]
@@ -34,6 +43,8 @@ def extract_infos(processed_img):
                 center=(cx, cy)
         )
     
+    draw.rectangle(((title_coord[0], title_coord[2]), (title_coord[0]+w, title_coord[2]+h)), outline='red', width=2)
+
     #info
     info_coords=hor_list[0][2:]
     x_mins = np.array(info_coords).T[0] 
@@ -55,5 +66,8 @@ def extract_infos(processed_img):
                 patchSize=(w,h), 
                 center=(cx, cy)
         )
-    
+    draw.rectangle(((info_x_start, info_y_start), (info_x_start+w, info_y_start+h)), outline='red', width=2)
+
+    #각 부분에 네모 그린 이미지 저장
+    img.save('./static/rect.png')
     return (email, title, info)

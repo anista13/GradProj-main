@@ -55,6 +55,10 @@
 			var newImage = document.getElementById('image-show').lastElementChild;
 			newImage.style.visibility = "visible";
 		}
+		/*function show_captured_img(){
+			var newImage = document.getElementById('image-show').lastElementChild;
+			newImage.style.visibility = "visible";
+		}*/
 	</script>
 </head>
 
@@ -69,15 +73,25 @@
 					<h2 class="mt-5" style="font-family: 'Song Myung', serif;">E로 쓰는 편지</h2>
 
 					<h4 style="font-family: 'Song Myung', serif;">손으로 쓴 편지를 여기에서 스캔해 주세요</h4>
-					<div id="image-show"><img src="http://127.0.0.1:4000/video_feed" height="300px"></div>
+
+					<!--<div id="image-show"><img src="http://127.0.0.1:4000/video_feed" height="300px"></div>-->
+
+					<div id="image-show"><img src={{img}} height="300px"></div>
+					<!--<div id="image"><img src="{{ url_for('static', filename=capimg) }}"	height="300px"></div>-->
 
 					<form method="post" action="http://127.0.0.1:4000/requests" class="buttons">
-						<input type="submit" value="Stop/Start" name="stop" />
+						<input type="submit" value="Start" name="start" />
 						<input type="submit" value="Capture" name="click" />
 						<input type="submit" value="Grey" name="grey" />
 						<input type="submit" value="OK" name="ok" />
-						<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">
+						<!--<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">-->
 					</form>
+
+					<form action="http://127.0.0.1:4000/uploader"
+						method="post"
+						enctype="multipart/form-data">
+						<input type="file" name="file" accept="img/*"/>
+						<input type="submit"/>
 				</div>
 			</div>
 		</div>
@@ -95,10 +109,15 @@
 						<input type="text" name="title" value="{{title}}" id="title">
 					</div>
 					<textarea name="text" id="text" rows="12" cols="35">{{text}}</textarea>
-					<div>
-						사진을 첨부하시겠습니까?
-						<input type="radio" name="1">예 <input type="radio" name="1">아니오
-					</div>
+					<fieldset>
+						<div>
+							사진을 첨부하시겠습니까?
+						</div>
+						<input type="radio" id="attach-yes" name="attach" value="yes" checked>
+						<label for="attach-yes">예</label>
+						<input type="radio" id="attach-no" name="attach" value="no">
+						<label for="attach-no">아니요</label>
+					</fieldset>
 					<input type="submit" name="submit" value="Send"></button>
 				</form>
 			</div>

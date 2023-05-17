@@ -92,6 +92,7 @@
 						enctype="multipart/form-data">
 						<input type="file" name="file" accept="img/*"/>
 						<input type="submit"/>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -99,7 +100,7 @@
 		<div id="block2">
 			<div>
 				<h2>스캔한 정보</h2>
-				<form action="/send_email" method="post" class="buttons">
+				<form action="http://127.0.0.1:4000/send_email" method="post" class="buttons">
 					<div>
 						<label for="email">수신자:</label>
 						<input type="email" name="email" value="{{email}}" id="email">

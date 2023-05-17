@@ -26,7 +26,7 @@ except OSError as error:
     pass
 
 
-app = Flask(__name__, template_folder='./templates')
+app = Flask(__name__, template_folder='./templates')#, static_url_path='', static_folder='/static')
 
 camera = cv2.VideoCapture(0)
 
@@ -162,6 +162,8 @@ def tasks():
 def uploader_file():
     if request.method=='POST':
         f=request.files['file']
+        #filename= url_for('static', filename='my_image.jpg')
+
         f.save("./static/"+f.filename)#경로를 static안으로 설정
         #global result
         #result = convert_to_text(f.filename)
@@ -178,43 +180,47 @@ def uploader_file():
     
 @app.route('/send_email', methods=['POST'])
 def send_email():
-    global p
+    if request.method=='POST':
+        global p
 
-    # Get the form data from the request object
-    recipient = request.form['email']
-    subject = request.form['title']
-    message = request.form['text']
-    attach_image = request.form['attach']
+        # Get the form data from the request object
+        recipient = request.form['email']
+        subject = request.form['title']
+        message = request.form['text']
+        attach_image = request.form['attach']
 
-    # Set base email info
-    msg = MIMEMultipart()
-    msg['Subject'] = subject
-    msg['From'] = 'bik48154815@gmail.com'
-    msg['To'] = recipient
+        # Set base email info
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        msg['From'] = 'bik48154815@gmail.com'
+        #msg['From'] = 'no-reply@gmail.com'
+        msg['To'] = recipient
 
-    # Set contents
-    msg.attach(MIMEText(message))
+        # Set contents
+        msg.attach(MIMEText(message))
 
-    # Create a MIME text object with the message
-    msg = MIMEMultipart()
-    msg['Subject'] = subject
-    content = MIMEText(message)
-    msg.attach(content)
-    if attach_image == 'yes':
-        with open(p, 'rb') as f:
-            img = MIMEImage(f.read())
-            img.add_header('Content-Disposition', 'attachment',
-                           filename=os.path.basename(p))
-            msg.attach(img)
+        # Create a MIME text object with the message
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        content = MIMEText(message)
+        msg.attach(content)
+        if attach_image == 'yes':
+            with open(p, 'rb') as f:
+                img = MIMEImage(f.read())
+                img.add_header('Content-Disposition', 'attachment',
+                            filename=os.path.basename(p))
+                msg.attach(img)
 
-    # Connect to the SMTP server and send the email
-    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-        smtp.starttls()
-        smtp.login('bik48154815@gmail.com', 'cknscchqmsgvalch')
-        smtp.sendmail('bik48154815@gmail.com', recipient, msg.as_string())
+        # Connect to the SMTP server and send the email
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.starttls()
+            smtp.login('bik48154815@gmail.com', 'cknscchqmsgvalch')
+            smtp.sendmail('bik48154815@gmail.com', recipient, msg.as_string())
+            #smtp.sendmail('no-reply@gmail.com', recipient, msg.as_string())
 
-    # Return a response to the client
-    return 'Email sent successfully'
+        # Return a response to the client
+        #return 'Email sent successfully'
+        return render_template('index.html', img="http://127.0.0.1:4000/video_feed")#성공메세지 출력하기
 
 
 if __name__ == '__main__':

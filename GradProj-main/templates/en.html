@@ -47,7 +47,11 @@
 						placeholder="Write here your mail">{{text}}</textarea>
 					<div>
 						<label class="label" for="1">Would you like to attach a photo?</label>
-						<input type="radio" name="1">예 <input type="radio" name="1">아니오
+						<!--<input type="radio" name="1">예 <input type="radio" name="1">아니오-->
+						<input type="radio" id="attach-yes" name="attach" value="yes" checked>
+						<label for="attach-yes">Yes</label>
+						<input type="radio" id="attach-no" name="attach" value="no">
+						<label for="attach-no">No</label>
 					</div>
 					<button class="CustomButton" type="submit"><img src="/static/sendicon.svg"
 							class="Icon">Send</button>

@@ -192,8 +192,8 @@ def send_email():
         # Set base email info
         msg = MIMEMultipart()
         msg['Subject'] = subject
-        msg['From'] = 'bik48154815@gmail.com'
-        #msg['From'] = 'no-reply@gmail.com'
+        #msg['From'] = 'bik48154815@gmail.com'
+        msg['From'] = 'no-reply@gmail.com'
         msg['To'] = recipient
 
         # Set contents
@@ -215,8 +215,8 @@ def send_email():
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
             smtp.starttls()
             smtp.login('bik48154815@gmail.com', 'cknscchqmsgvalch')
-            smtp.sendmail('bik48154815@gmail.com', recipient, msg.as_string())
-            #smtp.sendmail('no-reply@gmail.com', recipient, msg.as_string())
+            #smtp.sendmail('bik48154815@gmail.com', recipient, msg.as_string())
+            smtp.sendmail('no-reply@gmail.com', recipient, msg.as_string())
 
         # Return a response to the client
         #return 'Email sent successfully'

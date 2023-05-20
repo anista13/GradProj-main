@@ -1,6 +1,7 @@
 from image_preprocess import *
 from extract_infos import *
 from check_grammar import *
+from difflib import SequenceMatcher
 
 def convert_to_text(temp_result):#email, title, info부분 각각 매개변수로 따로 받기
     #processed_img=image_preprocess(img)#이부분 없애기
@@ -12,8 +13,14 @@ def convert_to_text(temp_result):#email, title, info부분 각각 매개변수�
     raw_email = reader_en.readtext(temp_result[0], detail=0, height_ths=1, width_ths=100)
     
     email = "".join(raw_email).replace(" ", "")#띄어쓰기 없애기
-    #@뒤는 한정짓기
-    #####
+
+    #limit the email domain
+    domains=["gmail.com", "naver.com", "daum.net", "hanmail.net", "kakao.com", "pusan.ac.kr"]
+    domain=email.split("@")[1]#extract domain
+    ratios=[SequenceMatcher(None, domain, s).ratio() for s in domains]
+    ind=ratios.index(max(ratios))
+    email=email.split("@")[0]+"@"+domains[ind]
+    
     print(email)
 
     #title

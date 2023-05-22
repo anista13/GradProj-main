@@ -13,6 +13,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 import smtplib
+import requests
 
 global capture, rec_frame, grey, switch, neg, face, rec, out, result, p, captured_img, img_path, temp_result
 capture = 0
@@ -100,7 +101,7 @@ def video_feed():
 
 @app.route('/requests', methods=['POST', 'GET'])  # make responsable buttons
 def tasks():
-    global switch, camera, result, shot_taken, captured_img, img_path, temp_result
+    global switch, camera, result, shot_taken, captured_img, img_path, temp_result, p
     if request.method == 'POST':
         if request.form.get('click') == 'Capture':
             #global capture
@@ -181,7 +182,7 @@ def uploader_file():
 @app.route('/send_email', methods=['POST'])
 def send_email():
     if request.method=='POST':
-        global p
+        """global p
 
         # Get the form data from the request object
         recipient = request.form['email']
@@ -216,12 +217,34 @@ def send_email():
             smtp.starttls()
             smtp.login('bik48154815@gmail.com', 'cknscchqmsgvalch')
             #smtp.sendmail('bik48154815@gmail.com', recipient, msg.as_string())
-            smtp.sendmail('no-reply@gmail.com', recipient, msg.as_string())
+            smtp.sendmail('no-reply@gmail.com', recipient, msg.as_string())"""
+        
+        send_message(request.form['email'], request.form['title'], request.form['text'], request.form['attach'])
 
         # Return a response to the client
         #return 'Email sent successfully'
         return render_template('index.html', img="http://127.0.0.1:4000/video_feed")#성공메세지 출력하기
 
+def send_message(email, title, text, attach):
+    global p
+    if attach == 'yes':
+        with open(p, 'rb') as f:
+            return requests.post(
+                "https://api.mailgun.net/v3/esmartletter.com/messages",
+                auth=("api", "0138d30f7d4e1966f0c2d06359afa5f0-07ec2ba2-6790bd3e"),
+                files = [("attachment", f)],
+                data={"from": "E로쓰는편지 <noreply@esmartletter.com>",
+                    "to": [email],
+                    "subject": title,
+                    "text": text})
+    else:
+        return requests.post(
+            "https://api.mailgun.net/v3/esmartletter.com/messages",
+            auth=("api", "0138d30f7d4e1966f0c2d06359afa5f0-07ec2ba2-6790bd3e"),
+            data={"from": "E로쓰는편지 <noreply@esmartletter.com>",
+                    "to": [email],
+                    "subject": title,
+                    "text": text})
 
 if __name__ == '__main__':
     app.run('127.0.0.1', port=4000, debug=True)

@@ -13,38 +13,158 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 	<title>Project</title>
 </head>
+<style>
+	.CustomButto {
+		margin-top: 5px;
+		background-color: #6498db;
+		border: 2px solid #6498db;
+		border-radius: 10px;
+		color: white;
+		font-size: medium;
+		padding: 4px 10px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		/* font-size: 16px; */
+	}
+
+	.btn {
+		margin-top: 5px;
+		background-color: rgba(0, 118, 255, 0.9);
+		border: 2px solid rgba(0, 118, 255, 0.9);
+		/* border-radius: 12px; */
+		border-radius: 12px;
+		color: white;
+		/* border-color: rgb(110, 110, 110); */
+		font-size: small;
+		padding: 3px 15px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		box-shadow: 0 4px 14px 0 rgb(0 118 255 / 39%);
+		transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+	}
+
+	.file {
+		margin-left: 40px;
+	}
+
+	.lan {
+
+		display: inline-block;
+		outline: 0;
+		cursor: pointer;
+		border: none;
+		padding: 5px 10px;
+		/* height: 45px; */
+		/* line-height: 45px; */
+		border-radius: 7px;
+		background-color: #6498db;
+		color: white;
+		/* font-weight: 400; */
+		font-size: 13px;
+		/* box-shadow: 0 4px 14px 0 rgb(0 118 255 / 39%); */
+		/* transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; */
+
+		:hover {
+			background: rgba(0, 118, 255, 0.9);
+			box-shadow: 0 6px 20px rgb(0 118 255 / 23%);
+		}
+
+	}
+
+	.mt-5 {
+		text-align: center;
+		margin-right: auto;
+		margin-left: 55vh;
+		font-size: 25px;
+		margin-bottom: 0;
+		margin-top: 5px;
+	}
+</style>
+<script>
+	function showImg(input) {
+		var file = input.files[0];//선택된 파일 가져오기
+
+		//이미지 div추가
+		var newImage = document.createElement("img");
+		newImage.setAttribute("class", 'img');
+
+		//이미지 소스 가져오기
+		newImage.src = URL.createObjectURL(file);
+
+		newImage.style.width = "70%";
+		newImage.style.height = "70%";
+		newImage.style.objectFit = "contain";
+		//이미지파일이 아닌경우 예외처리->이미 되어있음!
+
+		//이미지를 image-show div에 추가
+		var container = document.getElementById('image-show');
+		container.appendChild(newImage);
+		var prevImg = document.getElementById('image-show').firstElementChild;
+		prevImg.remove()
+
+		var newImage = document.getElementById('image-show').lastElementChild;
+		newImage.style.visibility = "visible";
+	}
+		/*function show_captured_img(){
+var newImage = document.getElementById('image-show').lastElementChild;
+newImage.style.visibility = "visible";
+}*/
+</script>
 
 <body>
 	<div class="header">
-		<div class="header__item">Auto email</div> <!-- insert a logo here -->
+		<div class="header__item"><button onclick="window.location='./'" class="lan">한국어/Korean</button></div>
+		<!-- insert a logo here -->
 		<a class="header__item" href="#">About</a> <!-- link to about page -->
-		<a class="header__item" href="#">Main</a> <!-- link to main page -->
-
+		<!-- <a class="header__item" href="#">Main</a> link to main page -->
+		<h3 class="mt-5" style="font-family: 'Song Myung', serif;">Write letter with E</h3>
 	</div>
+
 	<div class="container">
+
 		<div class="block1">
 			<div class="title">Scan handwritten letter</div>
-			<img src="http://127.0.0.1:4000/video_feed" height="300px">
-			<form method="post" action="http://127.0.0.1:4000/request" class="buttons">
-				<!-- icons are located in static folder as svg files -->
+			<br />
+			<!-- <img src="http://127.0.0.1:4000/video_feed" height="300px"> -->
+			<div id="image-show"><img src={{img}} height="300px"></div>
+			<!-- <form method="post" action="http://127.0.0.1:4000/requests" class="buttons">
 				<button class="CustomButton" type="submit" name="stop"><img src="/static/recordicon.svg"
 						class="Icon">Record</button>
 				<button class="CustomButton" type="submit" name="click"><img src="/static/cameraicon.svg"
 						class="CameraIcon">Capture</button>
+						
 				<button class="CustomButton" type="submit" name="grey">Grey</button>
+			</form> -->
+			<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+				<input type="submit" style="margin-left: 70px;" class="CustomButto" value="Start" name="start" />
+				<input type="submit" class="CustomButto" value="Capture" name="click" />
+				<input type="submit" class="CustomButto" value="Grey" name="grey" />
+				<input type="submit" class="CustomButto" value="OK" name="ok" />
+				<!--<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">-->
+			</form>
+			<br />
+			<form action="http://127.0.0.1:4000/uploader" method="post" enctype="multipart/form-data">
+				<input type="file" name="file" accept="img/*" class="file" />
+				<input type="submit" value="제출" class="btn" />
 			</form>
 		</div>
+
 		<div class="block2">
 			<div>
 				<div class="title">Scanned Information</div>
 				<br />
+
 				<form action="/send_email" method="post" class="Form">
 					<input class="Form__input" type="email" name="email" value="{{email}}" id="email"
-						placeholder="Email">
+						placeholder="Email:">
 					<input class="Form__input" type="text" name="title" value="{{title}}" id="title"
-						placeholder="Title">
+						placeholder="Title:">
 					<textarea class="Form__textarea" name="text" id="text" rows="12" cols="35"
-						placeholder="Write here your mail">{{text}}</textarea>
+						placeholder="Here your email">{{text}}</textarea>
+
 					<div>
 						<label class="label" for="1">Would you like to attach a photo?</label>
 						<!--<input type="radio" name="1">예 <input type="radio" name="1">아니오-->
@@ -53,12 +173,13 @@
 						<input type="radio" id="attach-no" name="attach" value="no">
 						<label for="attach-no">No</label>
 					</div>
+
 					<button class="CustomButton" type="submit"><img src="/static/sendicon.svg"
 							class="Icon">Send</button>
 				</form>
-				</dviv>
 			</div>
 		</div>
+	</div>
 </body>
 
 </html>

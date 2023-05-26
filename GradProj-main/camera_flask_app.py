@@ -235,48 +235,48 @@ def send_email():
 @app.route('/request', methods=['POST', 'GET'])  # make responsable buttons
 def task():
 
-#     global switc, camer, resul, shot_take, captured_im, img_pat, temp_resul
-#     if request.method == 'POST':
-#         if request.form.get('click') == 'Capture':
-#             success, fram = camer.read()
-#             now = datetime.datetime.now()
-#             p = os.path.sep.join(
-#                 ['shots', "shot_{}.png".format(str(now).replace(":", ''))])
-#             p = p.replace(" ", "-")
-#             cv2.imwrite(p, fram)
+    global switc, camera, resul, shot_take, captured_im, img_pat, temp_resul
+    if request.method == 'POST':
+        if request.form.get('click') == 'Capture':
+            success, fram = camera.read()
+            now = datetime.datetime.now()
+            p = os.path.sep.join(
+                ['shots', "shot_{}.png".format(str(now).replace(":", ''))])
+            p = p.replace(" ", "-")
+            cv2.imwrite(p, fram)
 
-#             # 여기서 글자 탐지, 네모 친 이미지를 static에 저장, return
-#             temp_resul = extract_infos(p)
-#             return render_template('en.html', img="./static/rect.png")
+            # 여기서 글자 탐지, 네모 친 이미지를 static에 저장, return
+            temp_resul = extract_infos(p)
+            return render_template('en.html', img="./static/rect.png")
 
-#         elif request.form.get('gre') == 'Grey':
-#             global gre
-#             gre = not gre
-#         elif request.form.get('star') == 'Start':  # stop or start the camera
-#             if (switc == 1):
-#                 switc = 0
-#                 camer.release()
-#                 cv2.destroyAllWindows()
-#             else:
-#                 camer = cv2.VideoCapture(0)
-#                 switc = 1
-#             return render_template('en.html', img="http://127.0.0.1:4000/video_feed")
-#         elif request.form.get('ok') == 'OK':
-#             # 찍힌 사진이 없는 경우 prompt띄우기
-#             resul = convert_to_text(temp_resul)
-#             print(resul)
-#             return render_template('en.html', email=resul[0], title=resul[1], text=resul[2], img="./static/rect.png")
-#         """elif request.form.get('upload') == 'Upload': ###여기 다시 보기!!!!!
-#             print("upload pushed")
-#             file = request.files['upload']
-#             file.save(file.filename)
-#             #result = convert_to_text(file)
-#             #print(result)
-#             res=test.gray(file)
-#             print(res)"""
-#     elif request.method == 'GET':
-#         return render_template('en.html')
-#         # return redirect(url_for('tasks'))
+        elif request.form.get('grey') == 'Grey':
+            global grey
+            grey = not grey
+        elif request.form.get('start') == 'Start':  # stop or start the camera
+            if (switc == 1):
+                switc = 0
+                camera.release()
+                cv2.destroyAllWindows()
+            else:
+                camera = cv2.VideoCapture(0)
+                switc = 1
+            return render_template('en.html', img="http://127.0.0.1:4000/video_feed")
+        elif request.form.get('ok') == 'OK':
+            # 찍힌 사진이 없는 경우 prompt띄우기
+            resul = convert_to_text(temp_resul)
+            print(resul)
+            return render_template('en.html', email=resul[0], title=resul[1], text=resul[2], img="./static/rect.png")
+        """elif request.form.get('upload') == 'Upload': ###여기 다시 보기!!!!!
+            print("upload pushed")
+            file = request.files['upload']
+            file.save(file.filename)
+            #result = convert_to_text(file)
+            #print(result)
+            res=test.gray(file)
+            print(res)"""
+    elif request.method == 'GET':
+        return render_template('en.html')
+        # return redirect(url_for('tasks'))
 
     return render_template('en.html', img="http://127.0.0.1:4000/video_feed")
 

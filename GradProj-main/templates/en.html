@@ -72,6 +72,16 @@
 			box-shadow: 0 6px 20px rgb(0 118 255 / 23%);
 		}
 
+
+
+	}
+
+	.ButtonsContainer {
+		margin-top: 0.5rem;
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+
 	}
 
 	.mt-5 {
@@ -138,17 +148,34 @@ newImage.style.visibility = "visible";
 						
 				<button class="CustomButton" type="submit" name="grey">Grey</button>
 			</form> -->
-			<form method="post" action="http://127.0.0.1:4000/requests" class="button">
-				<input type="submit" style="margin-left: 70px;" class="CustomButto" value="Start" name="start" />
-				<input type="submit" class="CustomButto" value="Capture" name="click" />
-				<input type="submit" class="CustomButto" value="Grey" name="grey" />
-				<input type="submit" class="CustomButto" value="OK" name="ok" />
-				<!--<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">-->
-			</form>
+			<div class="ButtonsContainer">
+				<form method="post" action="http://127.0.0.1:4000/request" class="button">
+					<button type="submit" class="CustomButton" value="Start" name="start">
+						<img src="/static/recordicon.svg" class="Icon" />
+						Start
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/request" class="button">
+					<button type="submit" class="CustomButton" value="Capture" name="click">
+						<img src="/static/cameraicon.svg" class="CameraIcon" />Capture
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/request" class="button">
+					<button type="submit" class="CustomButton" value="Grey" name="grey">
+						Grey
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/request" class="button">
+					<button type="submit" class="CustomButton" value="OK" name="ok">
+						<img src="/static/checkicon.svg" class="CheckIcon" />
+						OK
+					</button>
+				</form>
+			</div>
 			<br />
 			<form action="http://127.0.0.1:4000/uploader" method="post" enctype="multipart/form-data">
 				<input type="file" name="file" accept="img/*" class="file" />
-				<input type="submit" value="제출" class="btn" />
+				<input type="submit" value="Submit" class="btn" />
 			</form>
 		</div>
 

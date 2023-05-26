@@ -81,3 +81,6 @@ body{
 .CustomButton:active{
     background-color: var(--main-c);
 }
+.CheckIcon{
+    width: 1.2rem;
+}

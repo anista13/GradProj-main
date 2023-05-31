@@ -1,8 +1,7 @@
 import easyocr
-from check_grammar import *
 from difflib import SequenceMatcher
 
-def convert_to_text(temp_result):#email, title, info부분 각각 매개변수로 따로 받기
+def convert_to_text_en(temp_result):#email, title, info부분 각각 매개변수로 따로 받기
     #ocr
     #email
     reader_en = easyocr.Reader(['en'])
@@ -11,7 +10,7 @@ def convert_to_text(temp_result):#email, title, info부분 각각 매개변수�
     email = "".join(raw_email).replace(" ", "")#띄어쓰기 없애기
 
     #limit the email domain
-    domains=["gmail.com", "naver.com", "daum.net", "hanmail.net", "kakao.com", "pusan.ac.kr"]
+    domains=["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "aol.com", "icloud.com", "comcast.net", "verizon.net", "att.net", "sbcglobal.net", "cox.net"]
     domain=email.split("@")[1]#extract domain
     ratios=[SequenceMatcher(None, domain, s).ratio() for s in domains]
     ind=ratios.index(max(ratios))
@@ -20,22 +19,15 @@ def convert_to_text(temp_result):#email, title, info부분 각각 매개변수�
     print(email)
 
     #title
-    reader_ko = easyocr.Reader(['ko'])
-    raw_title = reader_ko.readtext(temp_result[1], detail=0, height_ths=1, width_ths=100)
-    
-    #check grammar of title
-    title=check_grammar(raw_title)
-    title=" ".join(title)
+    raw_title = reader_en.readtext(temp_result[1], detail=0, height_ths=1, width_ths=100)
+    title=" ".join(raw_title)
     print(title)
 
     #info
-    info = reader_ko.readtext(temp_result[2], detail=0, height_ths=1, width_ths=100)
+    info = reader_en.readtext(temp_result[2], detail=0, height_ths=1, width_ths=100)
     print(info)
-    #check grammar of each sentence in info
-    refined_text=check_grammar(info)
-
     #insert newline
-    text='\n'.join(refined_text)
+    text='\n'.join(info)
 
     # return (email, title, text) -->tuple!!
     return (email, title, text)

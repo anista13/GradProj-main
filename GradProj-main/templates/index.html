@@ -47,9 +47,7 @@
 
 	}
 
-	.file {
-		margin-left: 40px;
-	}
+	.file {}
 
 	.lan {
 
@@ -82,6 +80,36 @@
 		font-size: 25px;
 		margin-bottom: 0;
 		margin-top: 5px;
+	}
+
+	.ButtonsContainer {
+		margin-top: 0.5rem;
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+
+	}
+
+	.Image-video {
+		max-height: 350px;
+	}
+
+	/* #image-show {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	} */
+
+	.fileloader {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-items: flex-start;
+	}
+
+	.title {
+		margin-bottom: 1rem;
+		font-size: 1.2rem;
 	}
 </style>
 
@@ -123,8 +151,8 @@ newImage.style.visibility = "visible";
 		<div class="header__item"><button onclick="window.location='en' " class="lan">영어/English</button></div>
 
 		<!-- insert a logo here -->
-
-		<a class="header__item" href="#">About</a> <!-- link to about page -->
+		<div class="header__item"><button onclick="window.location='about' " class="lan">사용법</button></div>
+		<!--<a class="header__item" href="">사용법</a> -->
 		<h3 class="mt-5" style="font-family: 'Song Myung', serif;">E로 쓰는 편지</h3>
 
 	</div>
@@ -134,30 +162,52 @@ newImage.style.visibility = "visible";
 		<div class="block1">
 			<!-- <div> -->
 			<!-- <div class="col-lg-8  offset-lg-2"> -->
-			<h4 style="font-family: 'Song Myung', serif;">손으로 쓴 편지를 여기에서 스캔해 주세요</h4>
-			<div id="image-show"><img src={{img}} height="300px"></div>
+			<div class="title">손으로 쓴 편지를 여기에서 스캔해 주세요</div>
+			<div id="image-show"><img class="Image-video" src={{img}}></div>
 			<!--<div id="image"><img src="{{ url_for('static', filename=capimg) }}"	height="300px"></div>-->
+			<div class="ButtonsContainer">
+				<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+					<button type="submit" class="CustomButton" value="Start" name="start">
+						<img src="/static/recordicon.svg" class="Icon" />
+						시작
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+					<button type="submit" class="CustomButton" value="Capture" name="click">
+						<img src="/static/cameraicon.svg" class="CameraIcon" />촬영
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+					<button type="submit" class="CustomButton" value="Grey" name="grey">
+						회색
+					</button>
+				</form>
+				<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+					<button type="submit" class="CustomButton" value="OK" name="ok">
+						<img src="/static/checkicon.svg" class="CheckIcon" />
+						확인
+					</button>
+				</form>
+			</div>
 
-
-			<form method="post" action="http://127.0.0.1:4000/requests" class="button">
+			<!-- <form method="post" action="http://127.0.0.1:4000/requests" class="button">
 				<input type="submit" class="CustomButto" value="Start" name="start" style="margin-left: 70px;">
 				<input type="submit" class="CustomButto" value="Capture" name="click" />
 				<input type="submit" class="CustomButto" value="Grey" name="grey" />
 				<input type="submit" class="CustomButto" value="OK" name="ok" />
-				<!--<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">-->
-			</form>
+				<input type="file" id="uploadFile" value="Upload" name="upload" accept="img/*" onchange="showImg(this)">
+			</form> -->
 			<br />
-
-			<form action="http://127.0.0.1:4000/uploader" method="post" enctype="multipart/form-data">
+			<form class="fileloader" action="http://127.0.0.1:4000/uploader" method="post"
+				enctype="multipart/form-data">
 				<input type="file" name="file" accept="img/*" class="file" />
-				<input type="submit" value="제출" class="btn" />
+				<input type="submit" value="제출" class="CustomButton" />
 			</form>
 
 		</div>
 		<div class="block2">
 			<div>
-				<div class="title" style="font-family: 'Song Myung', serif;">스캔한 정보</div>
-				<br />
+				<div class="title">스캔한 정보</div>
 				<form action="http://127.0.0.1:4000/send_email" method="post" class="Form">
 					<!-- <div>
 						<label for="email">수신자:</label>
@@ -186,6 +236,7 @@ newImage.style.visibility = "visible";
 					<button class="CustomButton" type="submit" name="submit"><img src="/static/sendicon.svg"
 							class="Icon">보내기</button>
 				</form>
+
 			</div>
 
 		</div>
